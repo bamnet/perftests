@@ -25,6 +25,14 @@
         opacity: 0;
       }
     </style>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-271041-17', 'auto');
+      ga('send', 'pageview');
+    </script>
     <title>Performance Test</title>
   </head>
   <body>
@@ -96,7 +104,17 @@
           pct_95: math.quantileSeq(timing, 0.95),
           pct_99: math.quantileSeq(timing, 0.99),
         };
+        reportStats(stats);
         console.log(stats);
+      }
+
+      /**
+       * Log a bunch of timing stats back to Google Analytics for analysis.
+       */
+      function reportStats(stats) {
+        for (var prop in stats) {
+          ga('send', 'timing', 'frames', prop, stats[prop]);
+        }
       }
     </script>
   </body>
