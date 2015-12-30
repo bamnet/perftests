@@ -33,6 +33,7 @@
       <img class="hidden" src="images/img2_1920x1280.jpg" />
       <img class="hidden" src="images/img3_1920x1276.jpg" />
     </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/mathjs/2.5.0/math.min.js" async defer></script>
     <script>
       var images = document.getElementsByTagName('img');
       for(var i = 0; i < images.length; i++) {
@@ -53,6 +54,49 @@
       window.onload = function() {
         // If we set this class too soon an animation won't fire.
         images[0].className = 'visible';
+        // Start counting the animation times.
+        window.requestAnimationFrame(render);
+      }
+
+      // Max number of animation frames to sample.
+      const MAX_FRAMES = 1000;
+      // When the last frame was recieved (time in milliseconds).
+      var last = 0;
+      // Timing information (ms per frame).
+      var frames = [];
+      /**
+       * Render counts and logs the time between frames for MAX_FRAMES.
+       */
+      function render(now) {
+        if (last != 0) {
+          frames.push(now - last);
+        }
+        last = now;
+        if (frames.length < MAX_FRAMES) {
+          window.requestAnimationFrame(render);
+        } else {
+          computeStats(frames);
+        }
+      }
+
+      /**
+       * Given an array of frame timing, compute and log several statistics.
+       */
+      function computeStats(timing){
+        var stats = {
+          min: math.median(timing),
+          max: math.max(timing),
+
+          mean: math.mean(timing),
+          median: math.median(timing),
+
+          stdDev: math.std(timing),
+          pct_80: math.quantileSeq(timing, 0.8),
+          pct_90: math.quantileSeq(timing, 0.9),
+          pct_95: math.quantileSeq(timing, 0.95),
+          pct_99: math.quantileSeq(timing, 0.99),
+        };
+        console.log(stats);
       }
     </script>
   </body>
