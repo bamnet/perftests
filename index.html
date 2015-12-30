@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+
+        transition: opacity 1s ease-in-out;
+      }
+      .visible {
+        opacity: 1;
+      }
+      .hidden {
+        opacity: 0;
+      }
+    </style>
+    <title>Performance Test</title>
+  </head>
+  <body>
+    <div id="holder">
+      <img class="hidden" src="images/img1_1920x1280.jpg" />
+      <img class="hidden" src="images/img2_1920x1280.jpg" />
+      <img class="hidden" src="images/img3_1920x1276.jpg" />
+    </div>
+    <script>
+      var images = document.getElementsByTagName('img');
+      for(var i = 0; i < images.length; i++) {
+        // When the transition ends....
+        images[i].addEventListener('transitionend', function(e){
+          var elem = e.srcElement;
+          if (elem.className == 'visible') {
+            // If the image is currently visible, start to hide it.
+            elem.className = 'hidden';
+          } else if (elem.className == 'hidden') {
+            // If the image is currently hidden, show the next one.
+            var nextElement = (elem.nextElementSibling ? elem.nextElementSibling : images[0]);
+            nextElement.className = 'visible';
+          }
+        });
+      }
+      // Wait for the whole page to load before kicking off the rotation.
+      window.onload = function() {
+        // If we set this class too soon an animation won't fire.
+        images[0].className = 'visible';
+      }
+    </script>
+  </body>
+</html>
