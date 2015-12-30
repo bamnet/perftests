@@ -118,7 +118,7 @@
        */
       function reportStats(stats) {
         for (var prop in stats) {
-          ga('send', 'timing', 'frames', prop, stats[prop]);
+          ga('send', 'timing', 'frames', prop, Math.round(stats[prop]));
         }
       }
     </script>
