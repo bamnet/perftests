@@ -104,8 +104,13 @@
           pct_95: math.quantileSeq(timing, 0.95),
           pct_99: math.quantileSeq(timing, 0.99),
         };
-        reportStats(stats);
+        if (window.location.hash.indexOf("noreport") == -1) {
+          reportStats(stats);
+        }
         console.log(stats);
+        if (window.location.hash.indexOf("silent") == -1) {
+          alert(JSON.stringify(stats));
+        }
       }
 
       /**
