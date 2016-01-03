@@ -47,7 +47,7 @@
       for(var i = 0; i < images.length; i++) {
         // When the transition ends....
         images[i].addEventListener('transitionend', function(e){
-          var elem = e.srcElement;
+          var elem = e.target;
           if (elem.className == 'visible') {
             // If the image is currently visible, start to hide it.
             elem.className = 'hidden';
